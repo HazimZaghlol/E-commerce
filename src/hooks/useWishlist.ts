@@ -34,15 +34,12 @@ const useWishlist = () => {
       dispatch(removeWishlistItem(productId));
     },
   });
-  const isProductInWishlist = (productId: string) => {
-    const wishlist = wishlistQuery.data?.data || [];
-    return wishlist.some((item) => item._id === productId);
-  };
+ 
   return {
     wishlistAdd: wishlistMutation,
     wishlistGet: wishlistQuery,
     deleteWishlist: wishlistDelete,
-    isProductInWishlist,
+  
   };
 };
 
