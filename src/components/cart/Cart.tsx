@@ -1,7 +1,7 @@
 import React from "react";
 import useCart from "../../hooks/useCart";
 import { Link } from "react-router";
-import { ProductCartItem } from "../../types/cart";
+import { CartProduct } from "../../types/cart";
 import { Loading } from "../common/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems, selectTotalCartPrice } from "../../features/cart/cartSelectors";
@@ -136,7 +136,7 @@ const Cart: React.FC = () => {
               {!cartDetails.isLoading && !cartDetails.isError && !cartDetails.data?.products?.length && <div>Your cart is empty.</div>}
 
               {/* Render cart products */}
-              {cartItems.map((product: ProductCartItem) => (
+              {cartItems.map((product: CartProduct) => (
                 <div key={product._id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
                   <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                     <a href="#" className="shrink-0 md:order-1">
@@ -150,7 +150,7 @@ const Cart: React.FC = () => {
                     <div className="flex items-center justify-between md:order-3 md:justify-end">
                       <div className="flex items-center">
                         <button
-                          onClick={() => handleDecrement(product.product._id, product._id)}
+                          onClick={() => handleDecrement(product._id, product._id)}
                           type="button"
                           id="decrement-button"
                           className="cursor-pointer inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700"

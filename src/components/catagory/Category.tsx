@@ -2,6 +2,7 @@ import React from "react";
 import useCategory from "../../hooks/useCategories";
 import { Link } from "react-router";
 import { Loading } from "../common/Loading";
+import { Category } from "../../types/category";
 
 const Categories: React.FC = () => {
   const { categories } = useCategory();
@@ -29,7 +30,7 @@ const Categories: React.FC = () => {
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m9 5 7 7-7 7" />
                     </svg>
                     <a href="#" className="ms-1 text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-white md:ms-2">
-                    categories
+                      categories
                     </a>
                   </div>
                 </li>
@@ -44,7 +45,7 @@ const Categories: React.FC = () => {
           {categories.isLoading ? (
             <Loading />
           ) : (
-            categoryData.map((category) => (
+            categoryData.map((category: Category) => (
               <Link
                 key={category._id}
                 to={`/${category.slug}`}

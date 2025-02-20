@@ -103,7 +103,7 @@ const ProductCard: React.FC<{ props: Product }> = ({ props }) => {
           <p className="text-xl font-extrabold leading-tight text-gray-900 dark:text-white">EGP {props.price}</p>
           {isAuthenticated ? (
             <button
-              onClick={() => addToCart.mutate(props)}
+              onClick={() => addToCart.mutate(props._id)}
               type="button"
               className="inline-flex cursor-pointer items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >

@@ -1,53 +1,40 @@
-export interface Product {
-  product: {
-    subcategory: {
-      _id: string;
-      name: string;
-      slug: string;
-      category: string;
-    }[];
-    _id: string;
-    title: string;
-    quantity: number;
-    imageCover: string;
-    category: {
-      _id: string;
-      name: string;
-      slug: string;
-      image: string;
-    };
-    brand: {
-      _id: string;
-      name: string;
-      slug: string;
-      image: string;
-    };
-    ratingsAverage: number;
-    id: string;
-  };
+export interface Subcategory {
   _id: string;
-  sold: number;
-  title: string;
-  price: number;
-  quantity: number;
-  description: string;
-  imageCover: string;
-  images: string[];
-  ratingsQuantity: number;
-  ratingsAverage: number;
-  category: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
-  brand: {
-    _id: string;
-    name: string;
-    slug: string;
-  };
+  name: string;
+  slug: string;
+  category: string;
 }
 
-export interface ProductState {
-  products: Product[];
-  selectedProduct: Product | null;
+export interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+export interface Brand {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+export interface Product {
+  sold: number;
+  images: string[];
+  subcategory: Subcategory[];
+  ratingsQuantity: number;
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  quantity: number;
+  price: number;
+  imageCover: string;
+  category: Category;
+  brand: Brand;
+  ratingsAverage: number;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
 }

@@ -31,7 +31,7 @@ const ProductList: React.FC = () => {
                           Home
                         </Link>
                       </li>
-                
+
                       <li>
                         <div className="flex items-center">
                           <svg className="h-5 w-5 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" viewBox="0 0 24 24">

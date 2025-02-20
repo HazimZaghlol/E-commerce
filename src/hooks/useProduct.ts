@@ -7,7 +7,7 @@ const useProduct = () => {
     queryFn: fetchProductList,
   });
 
-  const useSingleProduct = (id: string) => {
+  const SingleProduct = (id: string) => {
     return useQuery({
       queryKey: ["product", id],
       queryFn: () => fetchSingleProduct(id),
@@ -15,7 +15,7 @@ const useProduct = () => {
     });
   };
 
-  return { allProductsQuery, useSingleProduct };
+  return { allProductsQuery, SingleProduct };
 };
 
 export default useProduct;

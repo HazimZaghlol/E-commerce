@@ -7,6 +7,5 @@ export const fetchProductList = async () => {
 
 export const fetchSingleProduct = async (productId: string) => {
   const response = await axiosInstance.get(`/products/${productId}`);
-  console.log(response);
   return response.data.data;
 };

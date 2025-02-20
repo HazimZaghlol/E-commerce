@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import { Loading } from "../common/Loading";
 import useBrands from "../../hooks/useBradns";
+import { Brand } from "../../types/brand";
 
 const Brands: React.FC = () => {
   const { Brands } = useBrands();
@@ -44,7 +45,7 @@ const Brands: React.FC = () => {
           {Brands.isLoading ? (
             <Loading />
           ) : (
-            BrandsData.map((Brands) => (
+            BrandsData.map((Brands: Brand) => (
               <Link
                 key={Brands._id}
                 to={`/${Brands.slug}`}

@@ -11,10 +11,11 @@ const ProductDetail: React.FC = () => {
   const isAuthenticated = IsAuthenticated();
   const { wishlistAdd } = useWishlist();
   const { id } = useParams();
-  const { useSingleProduct } = useProduct();
-  const { data: productsDetail } = useSingleProduct(id || "");
+  const { SingleProduct } = useProduct();
+  const { data: productsDetail } = SingleProduct(id || "");
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const { addToCart } = useCart();
+  console.log(productsDetail);
 
   const settings = {
     dots: true,
@@ -92,7 +93,7 @@ const ProductDetail: React.FC = () => {
             ) : (
               <div className="slider-container">
                 <Slider {...settings}>
-                  {productsDetail?.images?.map((image, index) => (
+                  {productsDetail?.images?.map((image: string, index: number) => (
                     <div key={index}>
                       <img src={image} alt={`Slide ${index + 1}`} className="w-full h-auto" />
                     </div>

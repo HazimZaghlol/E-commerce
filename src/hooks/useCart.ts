@@ -8,16 +8,14 @@ import { setCartDetails } from "../features/cart/cartSlice";
 import { useEffect } from "react";
 import { updateCartItem } from "../api/endpoints/cart";
 
-import { ProductCartItem } from "../types/cart";
-
 const useCart = () => {
   const token = useSelector(IsAuthenticated);
   const dispatch = useDispatch();
 
   const queryClient = useQueryClient();
-  
+
   const CartMutation = useMutation({
-    mutationFn: (products: ProductCartItem[]) => addToCart(products, token),
+    mutationFn: (products: string) => addToCart(products, token),
     onSuccess: async () => {
       toast.success("Product added to cart successfully!", { autoClose: 1000 });
       queryClient.invalidateQueries({
