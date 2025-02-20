@@ -1,7 +1,7 @@
 import { ShippingAddress } from "../../types/order";
 import axiosInstance from "../axios";
 
-export const LoginVerified = async (token: string ) => {
+export const LoginVerified = async (token: string  ) => {
   const response = await axiosInstance.get("/auth/verifyToken", {
     headers: {
       token: token,
