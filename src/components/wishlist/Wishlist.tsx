@@ -64,7 +64,7 @@ const Wishlist: React.FC = () => {
               {isLoading ? (
                 <Loading />
               ) : (
-                wishlistItems.map((item) => (
+                wishlistItems.map((item: Product) => (
                   <div key={item._id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
                     <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                       <a href="#" className="shrink-0 md:order-1">
