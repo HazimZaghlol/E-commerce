@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface WishlistItem {
-  _id: string;
-  title: string;
-  price: number;
-}
+import { Product } from "../../types/product";
 
 interface WishlistState {
-  items: WishlistItem[];
+  items: Product[];
 }
 
 const initialState: WishlistState = {
@@ -18,10 +13,10 @@ const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
-    setWishlist: (state, action: PayloadAction<WishlistItem[]>) => {
+    setWishlist: (state, action: PayloadAction<Product[]>) => {
       state.items = action.payload;
     },
-    addWishlistItem: (state, action: PayloadAction<WishlistItem>) => {
+    addWishlistItem: (state, action: PayloadAction<Product>) => {
       state.items.push(action.payload);
     },
     removeWishlistItem: (state, action: PayloadAction<string>) => {

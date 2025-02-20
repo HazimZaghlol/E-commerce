@@ -9,8 +9,9 @@ import { Product } from "../../types/product";
 
 const Wishlist: React.FC = () => {
   const { wishlistGet, deleteWishlist } = useWishlist();
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.items) as Product[];
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const { addToCart } = useCart();
+  console.log(wishlistItems);
 
   const { data, isLoading } = wishlistGet;
 
