@@ -7,11 +7,11 @@ import { getCartDetails } from "../api/endpoints/cart";
 import { toast } from "react-toastify";
 
 const useOrder = () => {
-  const token = IsAuthenticated();
+  const token = IsAuthenticated() || "";
 
   const TokenQuery = useQuery({
     queryKey: ["tknVerify", token],
-    queryFn: () => LoginVerified(token),
+    queryFn: () => (token ? LoginVerified(token) : Promise.resolve(null)),
     enabled: !!token,
   });
 
