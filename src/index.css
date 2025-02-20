@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@theme {
+  /* Define primary colors */
+  --color-primary-50: oklch(97.71% 0.012485946526696063 236.61974498403976);
+  --color-primary-100: oklch(95.14% 0.025 236.82);
+  --color-primary-200: oklch(90.14% 0.0555 230.9);
+  --color-primary-300: oklch(82.76% 0.1013 230.32);
+  --color-primary-400: oklch(75.35% 0.139 232.66);
+  --color-primary-500: oklch(68.47% 0.1479 237.32);
+  --color-primary-600: oklch(58.76% 0.1389 241.97);
+  --color-primary-700: oklch(50% 0.1193 242.75);
+  --color-primary-800: oklch(44.34% 0.1 240.79);
+  --color-primary-900: oklch(39.12% 0.0845 240.88);
+  --color-primary-950: oklch(29.35% 0.0632 243.16);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
