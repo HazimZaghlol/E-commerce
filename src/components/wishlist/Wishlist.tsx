@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Loading } from "../common/Loading";
 import useCart from "../../hooks/useCart";
-
+import { Product } from "../../types/product";
 
 const Wishlist: React.FC = () => {
   const { wishlistGet, deleteWishlist } = useWishlist();
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items) as Product[];
   const { addToCart } = useCart();
 
   const { data, isLoading } = wishlistGet;
@@ -81,7 +81,7 @@ const Wishlist: React.FC = () => {
                         </Link>
                         <div className="flex items-center gap-4 mt-3">
                           <button
-                            onClick={() => addToCart.mutate(item)}
+                            onClick={() => addToCart.mutate(item._id)}
                             type="button"
                             className="inline-flex items-center text-sm font-medium text-primary-600 hover:underline dark:text-primary-600 cursor-pointer"
                           >

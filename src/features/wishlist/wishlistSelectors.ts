@@ -1,4 +1,3 @@
-// src/features/wishlist/wishlistSelectors.ts
 
 import { RootState } from "../../store/store";
 

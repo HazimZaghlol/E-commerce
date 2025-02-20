@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductCartItem } from "../../types/cart";
+import { CartProduct } from "../../types/cart";
 
 interface CartState {
-  items: ProductCartItem[];
+  items: CartProduct[];
   totalCartPrice: number;
   serverTotalPrice: number;
 }
@@ -13,7 +13,7 @@ interface UpdateCartItemCountPayload {
 }
 
 interface CartDetailsPayload {
-  products: ProductCartItem[];
+  products: CartProduct[];
   totalCartPrice: number;
 }
 
