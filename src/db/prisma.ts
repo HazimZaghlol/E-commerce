@@ -1,6 +1,6 @@
 import ws from "ws";
 import { PrismaClient } from "@/generated/prisma";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { neonConfig } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
 // Sets up WebSocket connections, which enables Neon to use WebSocket communication.
