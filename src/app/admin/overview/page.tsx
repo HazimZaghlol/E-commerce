@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getOrderSummary } from "@/lib/actions/order.actions";
-import { formatCurrency, formatDateTime, formatNumberWithDecimal } from "@/lib/utils";
+import { formatCurrency, formatDateTime } from "@/lib/utils";
 import { BadgeDollarSign, Barcode, CreditCard, Users } from "lucide-react";
 import Link from "next/link";
 import Charts from "./charts";
@@ -26,7 +26,11 @@ const AdminOverviewPage = async () => {
             <BadgeDollarSign />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(summary.totalSales._sum.totalPrice!.toString())}</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(
+                (summary.totalSales._sum.totalPrice ?? 0).toString()
+              )}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -35,7 +39,7 @@ const AdminOverviewPage = async () => {
             <CreditCard />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumberWithDecimal(summary.ordersCount)}</div>
+            <div className="text-2xl font-bold">{summary.ordersCount}</div>
           </CardContent>
         </Card>
         <Card>

@@ -24,8 +24,8 @@ export default function DeleteDialog({ id, action }: { id: string; action: (id: 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm" disabled={isPending}>
-          {isPending ? "Deleting..." : "Delete"}
+        <Button variant="destructive" size="sm">
+          Delete
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -35,7 +35,6 @@ export default function DeleteDialog({ id, action }: { id: string; action: (id: 
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-
           <Button variant="destructive" size="sm" disabled={isPending} onClick={handleDeleteClick}>
             {isPending ? "Deleting..." : "Delete"}
           </Button>

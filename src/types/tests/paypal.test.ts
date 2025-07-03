@@ -1,4 +1,4 @@
-import { generateAccessToken, paypal } from "../lib/paypal";
+import { generateAccessToken, paypal } from "@/lib/paypal";
 
 test("generates a PayPal access token", async () => {
   const tokenResponse = await generateAccessToken();
@@ -9,9 +9,7 @@ test("generates a PayPal access token", async () => {
 
 // Create a PayPal order
 test("creates a PayPal order", async () => {
-  const token = await generateAccessToken();
   const price = 10.0;
-
   const orderResponse = await paypal.createOrder(price);
   console.log(orderResponse);
 

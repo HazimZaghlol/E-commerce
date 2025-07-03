@@ -226,17 +226,20 @@ export async function getMyOrders({ limit = PAGE_SIZE, page }: { limit?: number;
   const session = await auth();
   if (!session) throw new Error("User is not authenticated");
 
+  const userId = session?.user?.id;
+
+  if (!userId) throw new Error("Unauthenticated");
+
   const data = await prisma.order.findMany({
-    where: { userId: session?.user?.id! },
+    where: { userId },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
   });
 
   const dataCount = await prisma.order.count({
-    where: { userId: session?.user?.id! },
+    where: { userId },
   });
-  console.log("dataCount", Math.ceil(dataCount / limit));
 
   return {
     data,
@@ -287,8 +290,23 @@ export async function getOrderSummary() {
 }
 
 // Get All Orders (Admin)
-export async function getAllOrders({ limit = PAGE_SIZE, page }: { limit?: number; page: number }) {
+export async function getAllOrders({ limit = PAGE_SIZE, page, query }: { query: string; limit?: number; page: number }) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
+
   const data = await prisma.order.findMany({
+    where: {
+      ...queryFilter,
+    },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,

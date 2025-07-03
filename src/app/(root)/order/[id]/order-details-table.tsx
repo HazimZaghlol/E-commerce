@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PayPalButtons, PayPalScriptProvider, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { approvePayPalOrder, createPayPalOrder, deliverOrder, updateOrderToPaidByCOD } from "@/lib/actions/order.actions";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -49,7 +49,11 @@ const OrderDetailsTable = ({ order, paypalClientId, isAdmin }: { order: Order; p
         onClick={() =>
           startTransition(async () => {
             const res = await updateOrderToPaidByCOD(order.id);
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >
@@ -68,7 +72,11 @@ const OrderDetailsTable = ({ order, paypalClientId, isAdmin }: { order: Order; p
         onClick={() =>
           startTransition(async () => {
             const res = await deliverOrder(order.id);
-            res.success ? toast.success(res.message) : toast.error(res.message);
+            if (res.success) {
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
           })
         }
       >

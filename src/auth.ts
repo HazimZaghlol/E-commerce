@@ -5,6 +5,8 @@ import { compareSync } from "bcrypt-ts-edge";
 import Credentials from "next-auth/providers/credentials";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import type { Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -48,17 +50,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user, trigger, token }: any) {
+    async session({ session, user, trigger, token }: { session: Session; user: User; trigger?: "signIn" | "signUp" | "update"; token: JWT }) {
       session.user.id = token.sub;
       session.user.name = token.name;
-      session.user.role = token.role;
+      session.user.role = (token.role as string) || "user";
       if (trigger === "update") {
         session.user.name = user.name;
       }
       return session;
     },
 
-    async jwt({ token, user, trigger, session }: any) {
+    async jwt({ token, user, trigger, session }: { token: JWT; user?: User; trigger?: "signIn" | "signUp" | "update"; session?: Session }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -85,12 +87,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (sessionCart) {
             await prisma.cart.deleteMany({
-              where: { userId: user.id },
+              where: { userId: user!.id },
             });
 
             await prisma.cart.update({
               where: { id: sessionCart.id },
-              data: { userId: user.id },
+              data: { userId: user!.id },
             });
           }
         }
@@ -103,7 +105,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
-    authorized({ request, auth }: any) {
+    authorized({ request, auth }) {
       const protectedPaths = [/\/shipping-address/, /\/payment-method/, /\/place-order/, /\/profile/, /\/user\/(.*)/, /\/order\/(.*)/, /\/admin/];
       const { pathname } = request.nextUrl;
       if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
