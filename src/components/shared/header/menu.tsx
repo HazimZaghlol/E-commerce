@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
 import UserButton from "./user-button";
+import Search from "./search";
 
 const Menu = () => {
   return (
@@ -25,6 +26,9 @@ const Menu = () => {
               <EllipsisVertical />
             </SheetTrigger>
             <SheetContent className="flex flex-col items-start p-5">
+              <div className="mt-10">
+                <Search />
+              </div>
               <SheetTitle>Menu</SheetTitle>
               <ModeToggle />
               <Button asChild variant="ghost">
