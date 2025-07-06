@@ -5,8 +5,8 @@ import { compareSync } from "bcrypt-ts-edge";
 import Credentials from "next-auth/providers/credentials";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-// import type { Session, User } from "next-auth";
-// import type { JWT } from "next-auth/jwt";
+import type { Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -50,8 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async session({ session, user, trigger, token }: any) {
+    async session({ session, user, trigger, token }: { session: Session; user: User; trigger?: "signIn" | "signUp" | "update"; token: JWT }) {
       session.user.id = token.sub;
       session.user.name = token.name;
       session.user.role = (token.role as string) || "user";
@@ -61,8 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async jwt({ token, user, trigger, session }: any) {
+    async jwt({ token, user, trigger, session }: { token: JWT; user?: User; trigger?: "signIn" | "signUp" | "update"; session?: Session }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -100,6 +98,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
 
+      // Handle session updates (e.g., name change)
       if (session?.user.name && trigger === "update") {
         token.name = session.user.name;
       }
