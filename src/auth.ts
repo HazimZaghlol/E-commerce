@@ -50,6 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user, trigger, token }: any) {
       session.user.id = token.sub;
       session.user.name = token.name;
@@ -60,6 +61,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user, trigger, session }: any) {
       if (user) {
         token.id = user.id;
@@ -98,7 +100,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
       }
 
-      // Handle session updates (e.g., name change)
       if (session?.user.name && trigger === "update") {
         token.name = session.user.name;
       }
