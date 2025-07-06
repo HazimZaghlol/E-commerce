@@ -5,8 +5,8 @@ import { compareSync } from "bcrypt-ts-edge";
 import Credentials from "next-auth/providers/credentials";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import type { Session, User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
+// import type { Session, User } from "next-auth";
+// import type { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -50,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user, trigger, token }: { session: Session; user: User; trigger?: "signIn" | "signUp" | "update"; token: JWT }) {
+    async session({ session, user, trigger, token }: any) {
       session.user.id = token.sub;
       session.user.name = token.name;
       session.user.role = (token.role as string) || "user";
@@ -60,7 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
 
-    async jwt({ token, user, trigger, session }: { token: JWT; user?: User; trigger?: "signIn" | "signUp" | "update"; session?: Session }) {
+    async jwt({ token, user, trigger, session }: any) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
