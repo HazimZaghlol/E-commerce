@@ -36,7 +36,7 @@ export async function getAllProducts({
   sort,
 }: {
   query: string;
-  category: string;
+  category?: string;
   limit?: number;
   page: number;
   price?: string;
