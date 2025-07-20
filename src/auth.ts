@@ -1,12 +1,12 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import { prisma } from "./db/prisma";
-import { compareSync } from "bcrypt-ts-edge";
 import Credentials from "next-auth/providers/credentials";
-// import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import type { Session, User } from "next-auth";
 import type { JWT } from "next-auth/jwt";
+import { verifyPassword } from "./lib/password";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -35,7 +35,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (user && user.password) {
-          const isMatch = compareSync(credentials.password as string, user.password);
+          const isMatch = await verifyPassword(credentials.password as string, user.password);
+
           if (isMatch) {
             return {
               id: user.id,
@@ -105,24 +106,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
-    // authorized({ request, auth }) {
-    //   const protectedPaths = [/\/shipping-address/, /\/payment-method/, /\/place-order/, /\/profile/, /\/user\/(.*)/, /\/order\/(.*)/, /\/admin/];
-    //   const { pathname } = request.nextUrl;
-    //   if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+    authorized({ request, auth }) {
+      const protectedPaths = [/\/shipping-address/, /\/payment-method/, /\/place-order/, /\/profile/, /\/user\/(.*)/, /\/order\/(.*)/, /\/admin/];
+      const { pathname } = request.nextUrl;
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
 
-    //   if (!request.cookies.get("sessionCartId")) {
-    //     const sessionCartId = crypto.randomUUID();
-    //     const newRequestHeaders = new Headers(request.headers);
-    //     const response = NextResponse.next({
-    //       request: {
-    //         headers: newRequestHeaders,
-    //       },
-    //     });
-    //     response.cookies.set("sessionCartId", sessionCartId);
-    //     return response;
-    //   } else {
-    //     return true;
-    //   }
-    // },
+      if (!request.cookies.get("sessionCartId")) {
+        const sessionCartId = crypto.randomUUID();
+        const newRequestHeaders = new Headers(request.headers);
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders,
+          },
+        });
+        response.cookies.set("sessionCartId", sessionCartId);
+        return response;
+      } else {
+        return true;
+      }
+    },
   },
 });

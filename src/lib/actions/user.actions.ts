@@ -3,7 +3,6 @@
 import { auth, signIn, signOut } from "@/auth";
 import { paymentMethodSchema, shippingAddressSchema, signInFormSchema, signUpFormSchema, updateUserSchema } from "../validator";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
@@ -11,6 +10,7 @@ import { z } from "zod";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@/generated/prisma";
+import { hashPassword } from "../password";
 
 // signIn
 export async function signInWithCredentials(prevState: unknown, formData: FormData) {
@@ -49,7 +49,7 @@ export async function signUp(prevState: unknown, formData: FormData) {
 
     const plainPassword = user.password;
 
-    user.password = hashSync(user.password, 10);
+    user.password = await hashPassword(user.password);
 
     await prisma.user.create({
       data: {
