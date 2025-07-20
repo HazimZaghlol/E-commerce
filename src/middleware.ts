@@ -12,27 +12,48 @@ export async function middleware(request: NextRequest) {
   const isProtectedPath = protectedPaths.some((pattern) => pattern.test(pathname));
 
   if (isProtectedPath) {
-    // Get the token to check authentication
-    const token = await getToken({
-      req: request,
-      secret: process.env.AUTH_SECRET,
-    });
+    try {
+      // Get the token to check authentication
+      const token = await getToken({
+        req: request,
+        secret: process.env.AUTH_SECRET,
+        // Add cookieName to match NextAuth configuration
+        cookieName: process.env.NODE_ENV === "production" ? "__Secure-next-auth.session-token" : "next-auth.session-token",
+      });
 
-    if (!token) {
-      // Redirect to sign-in if not authenticated
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      console.log("Middleware - Path:", pathname, "Token exists:", !!token);
+
+      if (!token) {
+        console.log("No token found, redirecting to sign-in");
+        // Create absolute URL for redirect
+        const signInUrl = new URL("/sign-in", request.url);
+        // Add callback URL to return after sign-in
+        signInUrl.searchParams.set("callbackUrl", request.url);
+        return NextResponse.redirect(signInUrl);
+      }
+    } catch (error) {
+      console.error("Middleware error:", error);
+      // If there's an error getting the token, redirect to sign-in
+      const signInUrl = new URL("/sign-in", request.url);
+      signInUrl.searchParams.set("callbackUrl", request.url);
+      return NextResponse.redirect(signInUrl);
     }
   }
 
   // Handle session cart ID cookie
+  const response = NextResponse.next();
+
   if (!request.cookies.get("sessionCartId")) {
     const sessionCartId = crypto.randomUUID();
-    const response = NextResponse.next();
-    response.cookies.set("sessionCartId", sessionCartId);
-    return response;
+    response.cookies.set("sessionCartId", sessionCartId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
